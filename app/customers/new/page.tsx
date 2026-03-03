@@ -4,15 +4,29 @@ import { ArrowLeft, Save } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { createCustomer } from '@/lib/data'
 
 export default function NewCustomerPage() {
   const router = useRouter()
-  const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+  const [form, setForm] = useState({
+    name: '', phone: '', email: '', address: '', city: 'Denver', state: 'CO', zip: '', notes: ''
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const set = (field: string, value: string) => setForm(prev => ({ ...prev, [field]: value }))
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSaved(true)
-    setTimeout(() => router.push('/customers'), 1200)
+    setSaving(true)
+    setError('')
+    const result = await createCustomer(form)
+    if (result) {
+      router.push('/customers')
+    } else {
+      setError('Failed to save. Check your connection and try again.')
+      setSaving(false)
+    }
   }
 
   return (
@@ -27,9 +41,9 @@ export default function NewCustomerPage() {
         </div>
       </div>
 
-      {saved && (
-        <div className="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl text-sm font-medium">
-          ✓ Customer saved!
+      {error && (
+        <div className="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl text-sm font-medium">
+          {error}
         </div>
       )}
 
@@ -43,6 +57,8 @@ export default function NewCustomerPage() {
                 type="text"
                 required
                 placeholder="John Smith or Smith HVAC LLC"
+                value={form.name}
+                onChange={e => set('name', e.target.value)}
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -53,6 +69,8 @@ export default function NewCustomerPage() {
                   type="tel"
                   required
                   placeholder="(720) 555-0000"
+                  value={form.phone}
+                  onChange={e => set('phone', e.target.value)}
                   className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -61,6 +79,8 @@ export default function NewCustomerPage() {
                 <input
                   type="email"
                   placeholder="email@example.com"
+                  value={form.email}
+                  onChange={e => set('email', e.target.value)}
                   className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -74,24 +94,30 @@ export default function NewCustomerPage() {
             <input
               type="text"
               placeholder="Street Address"
+              value={form.address}
+              onChange={e => set('address', e.target.value)}
               className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <div className="grid grid-cols-3 gap-3">
               <input
                 type="text"
                 placeholder="City"
-                defaultValue="Denver"
+                value={form.city}
+                onChange={e => set('city', e.target.value)}
                 className="col-span-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="text"
                 placeholder="State"
-                defaultValue="CO"
+                value={form.state}
+                onChange={e => set('state', e.target.value)}
                 className="px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="text"
                 placeholder="ZIP"
+                value={form.zip}
+                onChange={e => set('zip', e.target.value)}
                 className="px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -102,17 +128,20 @@ export default function NewCustomerPage() {
           <h2 className="font-semibold text-gray-900 mb-3">Notes</h2>
           <textarea
             rows={3}
-            placeholder="Special access instructions, preferred times, equipment notes, dog on property, etc."
+            placeholder="Gate code, pet on property, preferred times, equipment notes..."
+            value={form.notes}
+            onChange={e => set('notes', e.target.value)}
             className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors"
+          disabled={saving}
+          className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors disabled:opacity-60"
         >
           <Save size={16} />
-          Save Customer
+          {saving ? 'Saving...' : 'Save Customer'}
         </button>
       </form>
     </div>
