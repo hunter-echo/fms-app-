@@ -1,28 +1,103 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Dark text in all inputs, selects, textareas */
+/* ─── INPUT TEXT ─────────────────────────────────────────────── */
 input, select, textarea {
   color: #111827 !important;
 }
-
 input::placeholder, textarea::placeholder {
   color: #9ca3af !important;
 }
+
+/* ─── DARK MODE ──────────────────────────────────────────────── */
+
+/* Page background */
+.dark body,
+.dark main {
+  background-color: #030712;
+  color: #f9fafb;
+}
+
+/* Cards / white surfaces → dark gray */
+.dark .bg-white {
+  background-color: #111827 !important;
+}
+
+/* Light gray backgrounds → darker */
+.dark .bg-gray-50 {
+  background-color: #030712 !important;
+}
+.dark .bg-gray-100 {
+  background-color: #1f2937 !important;
+}
+
+/* Borders */
+.dark .border-gray-100,
+.dark .border-gray-200 {
+  border-color: #374151 !important;
+}
+.dark .divide-gray-50 > * + * {
+  border-color: #1f2937 !important;
+}
+
+/* Text */
+.dark .text-gray-900 {
+  color: #f9fafb !important;
+}
+.dark .text-gray-700 {
+  color: #d1d5db !important;
+}
+.dark .text-gray-600 {
+  color: #9ca3af !important;
+}
+.dark .text-gray-500 {
+  color: #6b7280 !important;
+}
+.dark .text-gray-400 {
+  color: #4b5563 !important;
+}
+
+/* Hover states */
+.dark .hover\:bg-gray-50:hover {
+  background-color: #1f2937 !important;
+}
+.dark .hover\:bg-gray-100:hover {
+  background-color: #374151 !important;
+}
+
+/* Status badge backgrounds */
+.dark .bg-blue-50 { background-color: #1e3a5f !important; }
+.dark .bg-green-50 { background-color: #14532d !important; }
+.dark .bg-yellow-50 { background-color: #713f12 !important; }
+.dark .bg-red-50 { background-color: #7f1d1d !important; }
+.dark .bg-purple-50 { background-color: #3b0764 !important; }
+.dark .bg-orange-50 { background-color: #7c2d12 !important; }
+.dark .bg-emerald-50 { background-color: #14532d !important; }
+
+/* Inputs in dark mode */
+.dark input, .dark select, .dark textarea {
+  color: #f9fafb !important;
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+.dark input::placeholder, .dark textarea::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Stat card backgrounds */
+.dark .bg-blue-50.rounded-xl { background-color: #1e3a5f !important; }
+.dark .bg-purple-50.rounded-xl { background-color: #3b0764 !important; }
+.dark .bg-emerald-50.rounded-xl { background-color: #14532d !important; }
+.dark .bg-orange-50.rounded-xl { background-color: #7c2d12 !important; }
+.dark .bg-slate-50.rounded-xl { background-color: #1e293b !important; }
+
+/* Animated pulse skeleton in dark */
+.dark .animate-pulse .bg-gray-200 { background-color: #374151 !important; }
+.dark .animate-pulse .bg-gray-100 { background-color: #1f2937 !important; }
+
+/* Links staying blue */
+.dark .text-blue-600 { color: #60a5fa !important; }
+.dark .hover\:underline { text-decoration-color: #60a5fa; }
