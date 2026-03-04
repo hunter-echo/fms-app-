@@ -66,9 +66,11 @@ function NewInvoiceForm() {
     setError('')
 
     const invoiceData = {
-      ...form,
-      status,
+      customer_id: form.customer_id,
       job_id: form.job_id || undefined,
+      due_date: form.due_date,
+      notes: form.notes,
+      status,
       line_items: lineItems.map(l => ({
         id: l.id,
         description: l.description,
