@@ -4,18 +4,18 @@ import { Wind, Database, CreditCard, Map, Bell, Save } from 'lucide-react'
 
 export default function SettingsPage() {
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-6 max-w-3xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="mb-6 mt-2 md:mt-0">
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-500 text-sm mt-1">Configure your Mountain Climate HVAC account</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Configure your Mountain Climate HVAC account</p>
       </div>
 
       <div className="space-y-5">
         {/* Company Info */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <div className="flex items-center gap-2 mb-4">
             <Wind size={18} className="text-blue-600" />
-            <h2 className="font-semibold text-gray-900">Company Info</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">Company Info</h2>
           </div>
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-4">
@@ -56,10 +56,10 @@ export default function SettingsPage() {
         </div>
 
         {/* Integrations */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <div className="flex items-center gap-2 mb-4">
             <Database size={18} className="text-blue-600" />
-            <h2 className="font-semibold text-gray-900">Integrations</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">Integrations</h2>
           </div>
           <div className="space-y-4">
             {[
@@ -107,10 +107,10 @@ export default function SettingsPage() {
         </div>
 
         {/* Invoice Defaults */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <div className="flex items-center gap-2 mb-4">
             <CreditCard size={18} className="text-blue-600" />
-            <h2 className="font-semibold text-gray-900">Invoice Defaults</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">Invoice Defaults</h2>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -142,10 +142,10 @@ export default function SettingsPage() {
         </div>
 
         {/* Notifications */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <div className="flex items-center gap-2 mb-4">
             <Bell size={18} className="text-blue-600" />
-            <h2 className="font-semibold text-gray-900">Notifications</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">Notifications</h2>
           </div>
           <div className="space-y-3">
             {[

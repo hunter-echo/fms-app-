@@ -17,9 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} bg-gray-50 dark:bg-gray-950`}>
         <ThemeProvider>
-          <div className="flex h-screen">
+          <div className="flex h-screen bg-gray-50 dark:bg-gray-950">
             <Sidebar />
-            <main className="flex-1 overflow-auto pb-20 md:pb-0">
+            <main className="flex-1 overflow-auto pb-20 md:pb-0 bg-gray-50 dark:bg-gray-950">
               {children}
             </main>
           </div>

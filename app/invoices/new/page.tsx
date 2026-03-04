@@ -94,14 +94,14 @@ function NewInvoiceForm() {
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="flex items-center gap-3 mb-6 mt-2 md:mt-0">
         <Link href="/invoices" className="text-gray-400 hover:text-gray-700 transition-colors">
           <ArrowLeft size={20} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">New Invoice</h1>
-          <p className="text-gray-500 text-sm">Create and send an invoice</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">New Invoice</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Create and send an invoice</p>
         </div>
       </div>
 
@@ -111,7 +111,7 @@ function NewInvoiceForm() {
 
       <form className="space-y-5">
         {/* Customer + Job */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-4">Bill To</h2>
           <div className="space-y-3">
             <div>
@@ -152,7 +152,7 @@ function NewInvoiceForm() {
         </div>
 
         {/* Line Items */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-4">Line Items</h2>
           <div className="space-y-3">
             <div className="grid grid-cols-12 gap-2 text-xs font-medium text-gray-500 px-1">
@@ -196,14 +196,14 @@ function NewInvoiceForm() {
             <div className="flex justify-between text-sm text-gray-600">
               <span>Tax (8%)</span><span>${tax.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between text-base font-bold text-gray-900 pt-2 border-t border-gray-100">
+            <div className="flex justify-between text-base font-bold text-gray-900 pt-2 border-t border-gray-100 dark:border-gray-700">
               <span>Total</span><span>${total.toFixed(2)}</span>
             </div>
           </div>
         </div>
 
         {/* Notes */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-3">Notes</h2>
           <textarea rows={2} value={form.notes} onChange={e => set('notes', e.target.value)}
             className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />

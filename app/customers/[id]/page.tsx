@@ -74,14 +74,14 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="flex items-center gap-3 mb-6 mt-2 md:mt-0">
         <Link href="/customers" className="text-gray-400 hover:text-gray-700 transition-colors">
           <ArrowLeft size={20} />
         </Link>
         <div className="flex-1 min-w-0">
-          <h1 className="text-xl font-bold text-gray-900 truncate">{customer.name}</h1>
-          <p className="text-gray-500 text-sm">{totalSpend} completed job{totalSpend !== 1 ? 's' : ''}</p>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white truncate">{customer.name}</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">{totalSpend} completed job{totalSpend !== 1 ? 's' : ''}</p>
         </div>
         <button
           onClick={() => editing ? handleSave() : setEditing(true)}
@@ -101,7 +101,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
 
       <div className="space-y-4">
         {/* Contact Info */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-700 text-sm mb-4">Contact Info</h2>
           {editing ? (
             <div className="space-y-3">
@@ -183,17 +183,17 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Job History */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">Job History</h2>
+            <h2 className="font-semibold text-gray-900 dark:text-white">Job History</h2>
             <span className="text-xs text-gray-400">{jobs.length} total</span>
           </div>
           {jobs.length === 0 ? (
             <div className="px-5 py-8 text-center text-gray-400 text-sm">No jobs yet</div>
           ) : (
-            <div className="divide-y divide-gray-50">
+            <div className="divide-y divide-gray-50 dark:divide-gray-700">
               {jobs.map(job => (
-                <Link key={job.id} href={`/jobs/${job.id}`} className="block px-5 py-4 hover:bg-gray-50 transition-colors">
+                <Link key={job.id} href={`/jobs/${job.id}`} className="block px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <p className="font-medium text-gray-900 text-sm truncate">{job.title}</p>

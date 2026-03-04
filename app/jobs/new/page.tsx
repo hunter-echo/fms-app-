@@ -68,14 +68,14 @@ export default function NewJobPage() {
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="flex items-center gap-3 mb-6 mt-2 md:mt-0">
         <Link href="/jobs" className="text-gray-400 hover:text-gray-700 transition-colors">
           <ArrowLeft size={20} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">New Job</h1>
-          <p className="text-gray-500 text-sm">Create a new work order</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">New Job</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Create a new work order</p>
         </div>
       </div>
 
@@ -87,7 +87,7 @@ export default function NewJobPage() {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Customer */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-4">Customer</h2>
           <select
             required
@@ -106,7 +106,7 @@ export default function NewJobPage() {
         </div>
 
         {/* Job Details */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-4">Job Details</h2>
           <div className="space-y-4">
             <div>
@@ -164,7 +164,7 @@ export default function NewJobPage() {
         </div>
 
         {/* Scheduling */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-4">Scheduling</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -202,7 +202,7 @@ export default function NewJobPage() {
         </div>
 
         {/* Address */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-4">Service Address</h2>
           <div className="space-y-3">
             <input type="text" placeholder="Street Address" value={form.address}
@@ -224,7 +224,7 @@ export default function NewJobPage() {
         </div>
 
         {/* Notes */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-3">Internal Notes</h2>
           <textarea rows={3} placeholder="Gate code, pet on property, special instructions..."
             value={form.notes} onChange={e => set('notes', e.target.value)}

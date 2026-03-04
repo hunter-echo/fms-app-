@@ -30,14 +30,14 @@ export default function NewCustomerPage() {
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="flex items-center gap-3 mb-6 mt-2 md:mt-0">
         <Link href="/customers" className="text-gray-400 hover:text-gray-700 transition-colors">
           <ArrowLeft size={20} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">New Customer</h1>
-          <p className="text-gray-500 text-sm">Add a new customer to your database</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">New Customer</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Add a new customer to your database</p>
         </div>
       </div>
 
@@ -48,7 +48,7 @@ export default function NewCustomerPage() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-4">Contact Info</h2>
           <div className="space-y-4">
             <div>
@@ -88,7 +88,7 @@ export default function NewCustomerPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-4">Service Address</h2>
           <div className="space-y-3">
             <input
@@ -124,7 +124,7 @@ export default function NewCustomerPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-3">Notes</h2>
           <textarea
             rows={3}

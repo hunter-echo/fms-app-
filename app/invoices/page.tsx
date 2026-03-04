@@ -41,11 +41,11 @@ export default function InvoicesPage() {
   ]
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="flex items-center justify-between mb-6 mt-2 md:mt-0">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
-          <p className="text-gray-500 text-sm mt-1">{filtered.length} invoices</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Invoices</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{filtered.length} invoices</p>
         </div>
         <Link href="/invoices/new" className="bg-blue-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-blue-700 transition-colors">
           <Plus size={16} />New Invoice
@@ -84,14 +84,14 @@ export default function InvoicesPage() {
       {loading ? (
         <div className="space-y-3">
           {[1,2,3].map(i => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-5 animate-pulse">
+            <div key={i} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 animate-pulse">
               <div className="h-4 bg-gray-200 rounded w-1/4 mb-2" />
               <div className="h-3 bg-gray-100 rounded w-1/3" />
             </div>
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
           <p className="text-gray-400 text-sm">No invoices yet — create your first one!</p>
           <Link href="/invoices/new" className="mt-3 inline-block text-blue-600 text-sm hover:underline">+ New Invoice</Link>
         </div>
@@ -111,7 +111,7 @@ export default function InvoicesPage() {
                     <p className="text-xs text-gray-400 mt-1">Due {format(new Date(inv.due_date), 'MMM d, yyyy')}</p>
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="text-xl font-bold text-gray-900">${inv.total.toFixed(2)}</p>
+                    <p className="text-xl font-bold text-gray-900 dark:text-white">${inv.total.toFixed(2)}</p>
                     {inv.status === 'overdue' && <p className="text-xs text-red-500 font-medium mt-0.5">OVERDUE</p>}
                   </div>
                 </div>

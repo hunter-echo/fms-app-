@@ -39,7 +39,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
   if (loading) {
     return (
-      <div className="p-6 max-w-2xl mx-auto">
+      <div className="p-6 max-w-2xl mx-auto dark:bg-gray-950 min-h-screen">
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-gray-200 rounded w-1/2" />
           <div className="h-32 bg-gray-100 rounded-xl" />
@@ -100,7 +100,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="flex items-center gap-3 mb-6 mt-2 md:mt-0">
         <Link href="/jobs" className="text-gray-400 hover:text-gray-700 transition-colors">
           <ArrowLeft size={20} />
@@ -114,7 +114,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
               </span>
             )}
           </div>
-          <h1 className="text-xl font-bold text-gray-900 truncate">{job.title}</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white truncate">{job.title}</h1>
         </div>
         <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[job.status]}`}>
           {job.status.replace('_', ' ')}
@@ -129,11 +129,11 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
       <div className="space-y-4">
         {/* Customer */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-700 text-sm mb-3">Customer</h2>
           {customer ? (
             <div>
-              <p className="font-semibold text-gray-900">{customer.name}</p>
+              <p className="font-semibold text-gray-900 dark:text-white">{customer.name}</p>
               <div className="mt-2 space-y-1.5">
                 <a href={`tel:${customer.phone}`} className="flex items-center gap-2 text-sm text-blue-600 hover:underline">
                   <Phone size={14} />{customer.phone}
@@ -155,7 +155,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
         </div>
 
         {/* Job Info */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-700 text-sm mb-3">Details</h2>
           {job.description && <p className="text-sm text-gray-700 mb-3">{job.description}</p>}
           <div className="flex flex-wrap gap-4 text-sm text-gray-600">
@@ -186,7 +186,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
         {/* Map */}
         {job.address && (
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
             <iframe
               width="100%"
               height="200"
@@ -196,14 +196,14 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
               referrerPolicy="no-referrer-when-downgrade"
               src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(`${job.address}, ${job.city}, ${job.state} ${job.zip}`)}`}
             />
-            <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-100">
+            <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-100 dark:border-gray-700">
               {job.address}, {job.city}, {job.state} {job.zip}
             </div>
           </div>
         )}
 
         {/* Field Actions */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-700 text-sm mb-3">Field Actions</h2>
           <div className="grid grid-cols-2 gap-3">
             <a
@@ -228,7 +228,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
         </div>
 
         {/* Field Notes */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-700 text-sm mb-3">Field Notes</h2>
           <textarea
             rows={4}

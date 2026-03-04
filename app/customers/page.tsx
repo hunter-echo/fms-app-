@@ -26,11 +26,11 @@ export default function CustomersPage() {
   const getJobCount = () => 0 // will wire up later
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="flex items-center justify-between mb-6 mt-2 md:mt-0">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
-          <p className="text-gray-500 text-sm mt-1">{filtered.length} total</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Customers</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{filtered.length} total</p>
         </div>
         <Link
           href="/customers/new"
@@ -48,14 +48,14 @@ export default function CustomersPage() {
           placeholder="Search by name, email, phone, city..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:border-gray-600"
         />
       </div>
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[1,2,3,4].map(i => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-5 animate-pulse">
+            <div key={i} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 animate-pulse">
               <div className="flex gap-3">
                 <div className="w-10 h-10 rounded-full bg-gray-200" />
                 <div className="flex-1 space-y-2">
@@ -67,7 +67,7 @@ export default function CustomersPage() {
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
           <p className="text-gray-400 text-sm">
             {search ? 'No customers match your search' : 'No customers yet — add your first one!'}
           </p>
@@ -83,7 +83,7 @@ export default function CustomersPage() {
             <Link
               key={customer.id}
               href={`/customers/${customer.id}`}
-              className="bg-white rounded-xl border border-gray-200 p-5 hover:border-blue-300 hover:shadow-sm transition-all block"
+              className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:border-blue-300 hover:shadow-sm transition-all block"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">

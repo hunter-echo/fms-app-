@@ -53,10 +53,10 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="mb-6 mt-2 md:mt-0">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
           {format(new Date(), 'EEEE, MMMM d, yyyy')} — Mountain Climate HVAC
         </p>
       </div>
@@ -70,7 +70,7 @@ export default function Dashboard() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs font-medium text-gray-500 mb-1">{stat.label}</p>
-                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
                 </div>
                 <div className={`${stat.iconBg} p-2 rounded-lg`}>
                   <Icon size={18} className="text-white" />
@@ -83,14 +83,14 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Today's Jobs */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900">Today's Jobs</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-700">
+            <h2 className="font-semibold text-gray-900 dark:text-white">Today's Jobs</h2>
             <Link href="/schedule" className="text-blue-600 text-sm hover:underline flex items-center gap-1">
               View all <ChevronRight size={14} />
             </Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-gray-50 dark:divide-gray-700">
             {loading ? (
               <div className="px-5 py-8 text-center text-gray-400 text-sm animate-pulse">Loading...</div>
             ) : todaysJobs.length === 0 ? (
@@ -99,7 +99,7 @@ export default function Dashboard() {
               todaysJobs.map(job => {
                 const customer = job.customer || getCustomer(job.customer_id)
                 return (
-                  <Link key={job.id} href={`/jobs/${job.id}`} className="block px-5 py-4 hover:bg-gray-50 transition-colors">
+                  <Link key={job.id} href={`/jobs/${job.id}`} className="block px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -128,14 +128,14 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Invoices */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900">Recent Invoices</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-700">
+            <h2 className="font-semibold text-gray-900 dark:text-white">Recent Invoices</h2>
             <Link href="/invoices" className="text-blue-600 text-sm hover:underline flex items-center gap-1">
               View all <ChevronRight size={14} />
             </Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-gray-50 dark:divide-gray-700">
             {loading ? (
               <div className="px-5 py-8 text-center text-gray-400 text-sm animate-pulse">Loading...</div>
             ) : invoices.length === 0 ? (
@@ -147,7 +147,7 @@ export default function Dashboard() {
               invoices.slice(0, 5).map(inv => {
                 const customer = inv.customer || getCustomer(inv.customer_id)
                 return (
-                  <Link key={inv.id} href={`/invoices/${inv.id}`} className="block px-5 py-4 hover:bg-gray-50 transition-colors">
+                  <Link key={inv.id} href={`/invoices/${inv.id}`} className="block px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <div className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
                         <p className="font-medium text-gray-900 text-sm">{inv.invoice_number}</p>

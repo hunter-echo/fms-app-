@@ -105,17 +105,17 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
   const style = statusStyles[invoice.status] || statusStyles.draft
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="flex items-center gap-3 mb-6 mt-2 md:mt-0">
         <Link href="/invoices" className="text-gray-400 hover:text-gray-700 transition-colors">
           <ArrowLeft size={20} />
         </Link>
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-gray-900">{invoice.invoice_number}</h1>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">{invoice.invoice_number}</h1>
             <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${style.badge}`}>{style.label}</span>
           </div>
-          <p className="text-gray-500 text-sm">Due {format(new Date(invoice.due_date), 'MMMM d, yyyy')}</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Due {format(new Date(invoice.due_date), 'MMMM d, yyyy')}</p>
         </div>
       </div>
 
@@ -127,14 +127,14 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
 
       <div className="space-y-4">
         {/* Invoice Header */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex items-start justify-between mb-6">
             <div>
               <div className="font-bold text-gray-900 text-lg">Mountain Climate HVAC</div>
               <div className="text-sm text-gray-500 mt-0.5">Denver, CO</div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-gray-900">${invoice.total.toFixed(2)}</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">${invoice.total.toFixed(2)}</div>
               <div className="text-xs text-gray-400 mt-0.5">Total Due</div>
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           {customer && (
             <div className="border-t border-gray-100 pt-4">
               <p className="text-xs text-gray-400 mb-1">BILL TO</p>
-              <p className="font-semibold text-gray-900">{customer.name}</p>
+              <p className="font-semibold text-gray-900 dark:text-white">{customer.name}</p>
               {customer.email && <p className="text-sm text-gray-500">{customer.email}</p>}
               {customer.phone && <p className="text-sm text-gray-500">{customer.phone}</p>}
               {customer.address && (
@@ -153,7 +153,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
         </div>
 
         {/* Line Items */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-900 mb-4">Line Items</h2>
           <div className="space-y-3">
             {(invoice.line_items || []).map((item, i) => (
@@ -177,7 +177,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               <span>Tax ({(invoice.tax_rate * 100).toFixed(0)}%)</span>
               <span>${invoice.tax_amount.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-100">
+            <div className="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-100 dark:border-gray-700">
               <span>Total</span><span>${invoice.total.toFixed(2)}</span>
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
 
         {/* Notes */}
         {invoice.notes && (
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
             <h2 className="font-semibold text-gray-700 text-sm mb-2">Notes</h2>
             <p className="text-sm text-gray-600">{invoice.notes}</p>
           </div>
@@ -193,7 +193,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
 
         {/* Payment Link */}
         {invoice.status !== 'paid' && (
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
             <h2 className="font-semibold text-gray-700 text-sm mb-3">💳 Collect Payment</h2>
             {paymentLink ? (
               <div className="space-y-3">
@@ -223,7 +223,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
         )}
 
         {/* Status Actions */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
           <h2 className="font-semibold text-gray-700 text-sm mb-3">Update Status</h2>
           <div className="grid grid-cols-2 gap-3">
             {invoice.status !== 'paid' && (

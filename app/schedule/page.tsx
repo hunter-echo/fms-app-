@@ -47,15 +47,15 @@ export default function SchedulePage() {
   )
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto dark:bg-gray-950 min-h-screen">
       <div className="flex items-center justify-between mb-6 mt-2 md:mt-0">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Schedule</h1>
-          <p className="text-gray-500 text-sm mt-1">Week of {format(weekStart, 'MMM d, yyyy')}</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Schedule</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Week of {format(weekStart, 'MMM d, yyyy')}</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setCurrentWeek(d => addDays(d, -7))}
-            className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <ChevronLeft size={16} />
           </button>
           <button onClick={() => setCurrentWeek(new Date())}
@@ -63,7 +63,7 @@ export default function SchedulePage() {
             Today
           </button>
           <button onClick={() => setCurrentWeek(d => addDays(d, 7))}
-            className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <ChevronRight size={16} />
           </button>
           <Link href="/jobs/new"
