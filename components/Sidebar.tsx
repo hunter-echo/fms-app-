@@ -1,19 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
-  LayoutDashboard,
-  Users,
-  ClipboardList,
-  Calendar,
-  FileText,
-  Settings,
-  Wind,
-  Menu,
-  X,
+  LayoutDashboard, Users, ClipboardList, Calendar,
+  FileText, Settings, Wind, Menu, X, LogOut,
 } from 'lucide-react'
 import { useState } from 'react'
+import { signOut } from '@/lib/auth'
 
 const nav = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -26,11 +20,18 @@ const nav = [
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const router = useRouter()
   const [open, setOpen] = useState(false)
+
+  const handleSignOut = async () => {
+    await signOut()
+    router.push('/login')
+  }
+
+  if (pathname === '/login') return null
 
   return (
     <>
-      {/* Mobile toggle */}
       <button
         className="md:hidden fixed top-4 left-4 z-50 bg-blue-600 text-white p-2 rounded-lg shadow-lg"
         onClick={() => setOpen(!open)}
@@ -38,23 +39,16 @@ export default function Sidebar() {
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {/* Overlay */}
       {open && (
-        <div
-          className="md:hidden fixed inset-0 bg-black/40 z-30"
-          onClick={() => setOpen(false)}
-        />
+        <div className="md:hidden fixed inset-0 bg-black/40 z-30" onClick={() => setOpen(false)} />
       )}
 
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed md:static inset-y-0 left-0 z-40
-          w-64 bg-gray-900 text-white flex flex-col
-          transform transition-transform duration-200
-          ${open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        `}
-      >
+      <aside className={`
+        fixed md:static inset-y-0 left-0 z-40
+        w-64 bg-gray-900 text-white flex flex-col
+        transform transition-transform duration-200
+        ${open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
         {/* Logo */}
         <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-700">
           <div className="bg-blue-600 p-2 rounded-lg">
@@ -77,9 +71,7 @@ export default function Sidebar() {
                 onClick={() => setOpen(false)}
                 className={`
                   flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                  ${active
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-400 hover:bg-gray-800 hover:text-white'}
+                  ${active ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}
                 `}
               >
                 <Icon size={18} />
@@ -89,10 +81,19 @@ export default function Sidebar() {
           })}
         </nav>
 
-        {/* Bottom */}
-        <div className="px-6 py-4 border-t border-gray-700">
-          <div className="text-xs text-gray-500">Mountain Climate HVAC</div>
-          <div className="text-xs text-gray-600">v1.0.0 — Prototype</div>
+        {/* Sign Out */}
+        <div className="px-3 pb-4 border-t border-gray-700 pt-4">
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
+          >
+            <LogOut size={18} />
+            Sign Out
+          </button>
+          <div className="px-3 pt-3">
+            <div className="text-xs text-gray-500">Mountain Climate HVAC</div>
+            <div className="text-xs text-gray-600">v1.0.0</div>
+          </div>
         </div>
       </aside>
     </>
