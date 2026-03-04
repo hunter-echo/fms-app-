@@ -30,6 +30,12 @@ export async function POST(req: NextRequest) {
         invoice_number: invoiceNumber,
         customer_name: customerName || '',
       },
+      payment_intent_data: {
+        metadata: {
+          invoice_id: invoiceId,
+          invoice_number: invoiceNumber,
+        },
+      },
       after_completion: {
         type: 'hosted_confirmation',
         hosted_confirmation: {

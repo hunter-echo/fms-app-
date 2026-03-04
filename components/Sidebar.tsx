@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+
 import {
   LayoutDashboard, Users, ClipboardList, Calendar,
-  FileText, Settings, Wind, Menu, X, LogOut,
+  FileText, Settings, Wind, LogOut,
 } from 'lucide-react'
-import { useState } from 'react'
 import { signOut } from '@/lib/auth'
 
 const nav = [
@@ -21,7 +21,6 @@ const nav = [
 export default function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
-  const [open, setOpen] = useState(false)
 
   const handleSignOut = async () => {
     await signOut()
@@ -32,23 +31,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <button
-        className="md:hidden fixed top-4 left-4 z-50 bg-blue-600 text-white p-2 rounded-lg shadow-lg"
-        onClick={() => setOpen(!open)}
-      >
-        {open ? <X size={20} /> : <Menu size={20} />}
-      </button>
-
-      {open && (
-        <div className="md:hidden fixed inset-0 bg-black/40 z-30" onClick={() => setOpen(false)} />
-      )}
-
-      <aside className={`
-        fixed md:static inset-y-0 left-0 z-40
-        w-64 bg-gray-900 text-white flex flex-col
-        transform transition-transform duration-200
-        ${open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-      `}>
+      <aside className="hidden md:flex w-64 bg-gray-900 text-white flex-col">
         {/* Logo */}
         <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-700">
           <div className="bg-blue-600 p-2 rounded-lg">
@@ -68,7 +51,7 @@ export default function Sidebar() {
               <Link
                 key={href}
                 href={href}
-                onClick={() => setOpen(false)}
+                
                 className={`
                   flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
                   ${active ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}
