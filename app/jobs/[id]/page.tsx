@@ -184,6 +184,24 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
           </div>
         </div>
 
+        {/* Map */}
+        {job.address && (
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <iframe
+              width="100%"
+              height="200"
+              style={{ border: 0 }}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(`${job.address}, ${job.city}, ${job.state} ${job.zip}`)}`}
+            />
+            <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-100">
+              {job.address}, {job.city}, {job.state} {job.zip}
+            </div>
+          </div>
+        )}
+
         {/* Field Actions */}
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <h2 className="font-semibold text-gray-700 text-sm mb-3">Field Actions</h2>
