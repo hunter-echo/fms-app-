@@ -61,7 +61,7 @@ export default function InvoicesPage() {
                 <div className={`${s.color} p-2 rounded-lg`}><Icon size={16} className="text-white" /></div>
                 <div>
                   <p className="text-xs text-gray-500">{s.label}</p>
-                  <p className="font-bold text-gray-900">{s.value}</p>
+                  <p className={`font-bold text-gray-900 ${typeof s.value === 'string' && s.value.startsWith('$') ? 'dark:text-red-400' : 'dark:text-white'}`}>{s.value}</p>
                 </div>
               </div>
             </div>
@@ -111,7 +111,7 @@ export default function InvoicesPage() {
                     <p className="text-xs text-gray-400 mt-1">Due {format(new Date(inv.due_date), 'MMM d, yyyy')}</p>
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="text-xl font-bold text-gray-900 dark:text-white">${inv.total.toFixed(2)}</p>
+                    <p className="text-xl font-bold text-gray-900 dark:text-red-400">${inv.total.toFixed(2)}</p>
                     {inv.status === 'overdue' && <p className="text-xs text-red-500 font-medium mt-0.5">OVERDUE</p>}
                   </div>
                 </div>

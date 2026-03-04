@@ -134,7 +134,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
               <div className="text-sm text-gray-500 mt-0.5">Denver, CO</div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">${invoice.total.toFixed(2)}</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-red-400">${invoice.total.toFixed(2)}</div>
               <div className="text-xs text-gray-400 mt-0.5">Total Due</div>
             </div>
           </div>
@@ -164,21 +164,21 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                     {item.quantity} × ${item.unit_price?.toFixed(2)}
                   </p>
                 </div>
-                <p className="font-semibold text-gray-900 shrink-0">${(item.total || item.quantity * item.unit_price || 0).toFixed(2)}</p>
+                <p className="font-semibold text-gray-900 dark:text-red-400 shrink-0">${(item.total || item.quantity * item.unit_price || 0).toFixed(2)}</p>
               </div>
             ))}
           </div>
 
           <div className="mt-4 border-t border-gray-100 pt-4 space-y-2">
-            <div className="flex justify-between text-sm text-gray-600">
-              <span>Subtotal</span><span>${invoice.subtotal.toFixed(2)}</span>
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>Subtotal</span><span className="dark:text-red-400">${invoice.subtotal.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between text-sm text-gray-600">
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
               <span>Tax ({(invoice.tax_rate * 100).toFixed(0)}%)</span>
-              <span>${invoice.tax_amount.toFixed(2)}</span>
+              <span className="dark:text-red-400">${invoice.tax_amount.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-100 dark:border-gray-700">
-              <span>Total</span><span>${invoice.total.toFixed(2)}</span>
+            <div className="flex justify-between font-bold text-gray-900 dark:text-white pt-2 border-t border-gray-100 dark:border-gray-700">
+              <span>Total</span><span className="dark:text-red-400">${invoice.total.toFixed(2)}</span>
             </div>
           </div>
         </div>

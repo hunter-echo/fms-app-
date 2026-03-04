@@ -70,7 +70,7 @@ export default function Dashboard() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-xs font-medium text-gray-500 mb-1">{stat.label}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
+                  <p className={`text-2xl font-bold text-gray-900 ${typeof stat.value === 'string' && stat.value.startsWith('$') ? 'dark:text-red-400' : 'dark:text-white'}`}>{stat.value}</p>
                 </div>
                 <div className={`${stat.iconBg} p-2 rounded-lg`}>
                   <Icon size={18} className="text-white" />
@@ -155,7 +155,7 @@ export default function Dashboard() {
                         <p className="text-xs text-gray-400">Due {format(new Date(inv.due_date), 'MMM d, yyyy')}</p>
                       </div>
                       <div className="flex flex-col items-end gap-1 shrink-0">
-                        <p className="font-semibold text-gray-900 text-sm">${inv.total.toFixed(2)}</p>
+                        <p className="font-semibold text-gray-900 dark:text-red-400 text-sm">${inv.total.toFixed(2)}</p>
                         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusStylesInv[inv.status]}`}>
                           {inv.status}
                         </span>

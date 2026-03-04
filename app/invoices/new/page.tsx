@@ -173,7 +173,7 @@ function NewInvoiceForm() {
                 <input type="number" min="0" step="0.01"
                   value={item.unit_price} onChange={e => updateLine(item.id, 'unit_price', parseFloat(e.target.value) || 0)}
                   className="col-span-2 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-right" />
-                <div className="col-span-1 text-sm text-gray-700 text-right font-medium">
+                <div className="col-span-1 text-sm text-gray-700 dark:text-red-400 text-right font-medium">
                   ${(item.quantity * item.unit_price).toFixed(0)}
                 </div>
                 <button type="button" onClick={() => removeLine(item.id)}
@@ -190,14 +190,14 @@ function NewInvoiceForm() {
 
           {/* Totals */}
           <div className="mt-6 border-t border-gray-100 pt-4 space-y-2">
-            <div className="flex justify-between text-sm text-gray-600">
-              <span>Subtotal</span><span>${subtotal.toFixed(2)}</span>
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>Subtotal</span><span className="dark:text-red-400">${subtotal.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between text-sm text-gray-600">
-              <span>Tax (8%)</span><span>${tax.toFixed(2)}</span>
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+              <span>Tax (8%)</span><span className="dark:text-red-400">${tax.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between text-base font-bold text-gray-900 pt-2 border-t border-gray-100 dark:border-gray-700">
-              <span>Total</span><span>${total.toFixed(2)}</span>
+            <div className="flex justify-between text-base font-bold text-gray-900 dark:text-white pt-2 border-t border-gray-100 dark:border-gray-700">
+              <span>Total</span><span className="dark:text-red-400">${total.toFixed(2)}</span>
             </div>
           </div>
         </div>
