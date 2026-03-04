@@ -220,9 +220,10 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
               className="flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-50 text-emerald-700 rounded-xl text-sm font-medium hover:bg-emerald-100 transition-colors">
               <FileText size={15} />Create Invoice
             </Link>
-            <button className="flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-50 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-100 transition-colors">
+            <Link href={`/jobs/${id}/edit`}
+              className="flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-50 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-100 transition-colors">
               <Edit size={15} />Edit Job
-            </button>
+            </Link>
           </div>
         </div>
 

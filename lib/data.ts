@@ -56,11 +56,27 @@ export async function createJob(job: Omit<Job, 'id' | 'created_at' | 'job_number
 
 export async function updateJobStatus(id: string, status: Job['status'], notes?: string): Promise<boolean> {
   const sb = getSupabase()
-  if (!sb) return true // mock success
+  if (!sb) return true
   const update: Partial<Job> = { status }
   if (notes !== undefined) update.notes = notes
   if (status === 'completed') update.completed_at = new Date().toISOString()
   const { error } = await sb.from('jobs').update(update).eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+export async function updateJob(id: string, data: Partial<Job>): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('jobs').update(data).eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+export async function updateCustomer(id: string, data: Partial<Customer>): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('customers').update(data).eq('id', id)
   if (error) { console.error(error); return false }
   return true
 }

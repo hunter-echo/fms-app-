@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import { use } from 'react'
-import { getCustomers, getJobs } from '@/lib/data'
+import { getCustomers, getJobs, updateCustomer } from '@/lib/data'
 import type { Customer, Job } from '@/lib/types'
 import { format } from 'date-fns'
 import { ArrowLeft, Phone, Mail, MapPin, ClipboardList, Plus, Edit2, Save } from 'lucide-react'
 import Link from 'next/link'
-import { getSupabase } from '@/lib/supabase'
 
 const statusColors: Record<string, string> = {
   pending: 'bg-yellow-100 text-yellow-800',
@@ -41,16 +40,15 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
 
   const handleSave = async () => {
     setSaving(true)
-    const sb = getSupabase()
-    if (sb && form) {
-      const { name, phone, email, address, city, state, zip, notes } = form
-      await sb.from('customers').update({ name, phone, email, address, city, state, zip, notes }).eq('id', id)
+    const { name, phone, email, address, city, state, zip, notes } = form
+    const success = await updateCustomer(id, { name, phone, email, address, city, state, zip, notes })
+    if (success) {
       setCustomer(prev => prev ? { ...prev, ...form } : prev)
+      setSaved(true)
+      setEditing(false)
+      setTimeout(() => setSaved(false), 2000)
     }
     setSaving(false)
-    setSaved(true)
-    setEditing(false)
-    setTimeout(() => setSaved(false), 2000)
   }
 
   const totalSpend = jobs
