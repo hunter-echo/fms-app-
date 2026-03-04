@@ -77,6 +77,36 @@ export interface Invoice {
   stripe_payment_intent_id?: string
 }
 
+// ─── SHEETS ─────────────────────────────────────────────────────────────────
+
+export interface SheetField {
+  id: string
+  type: 'checkbox' | 'text' | 'number' | 'select' | 'textarea'
+  label: string
+  options?: string[]
+}
+
+export interface SheetTemplate {
+  id: string
+  name: string
+  description?: string
+  fields: SheetField[]
+  created_at: string
+}
+
+export interface JobSheet {
+  id: string
+  job_id: string
+  template_id?: string
+  template_name: string
+  responses: Record<string, string | boolean | number>
+  photos: string[]
+  status: 'in_progress' | 'completed'
+  notes?: string
+  completed_at?: string
+  created_at: string
+}
+
 export interface DashboardStats {
   totalJobs: number
   activeJobs: number

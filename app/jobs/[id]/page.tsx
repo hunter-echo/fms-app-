@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react'
 import { use } from 'react'
 import { useRouter } from 'next/navigation'
-import { getJob, updateJobStatus, getTechnicians } from '@/lib/data'
-import type { Job, Technician } from '@/lib/types'
+import { getJob, updateJobStatus, getTechnicians, getJobSheets } from '@/lib/data'
+import type { Job, Technician, JobSheet } from '@/lib/types'
 import type { JobStatus } from '@/lib/types'
 import { format } from 'date-fns'
-import { ArrowLeft, MapPin, Phone, Clock, User, Camera, CheckCircle, Edit, Navigation, Zap, FileText } from 'lucide-react'
+import { ArrowLeft, MapPin, Phone, Clock, User, Camera, CheckCircle, Edit, Navigation, Zap, FileText, FileCheck2, Plus } from 'lucide-react'
 import Link from 'next/link'
 
 const statusColors: Record<string, string> = {
@@ -27,12 +27,14 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [sheets, setSheets] = useState<JobSheet[]>([])
 
   useEffect(() => {
-    Promise.all([getJob(id), getTechnicians()]).then(([j, t]) => {
+    Promise.all([getJob(id), getTechnicians(), getJobSheets(id)]).then(([j, t, s]) => {
       setJob(j)
       setNotes(j?.notes || '')
       setTechnicians(t)
+      setSheets(s)
       setLoading(false)
     })
   }, [id])
@@ -244,6 +246,47 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
           >
             {saving ? 'Saving...' : 'Save Notes'}
           </button>
+        </div>
+
+        {/* Job Sheets */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold text-gray-700 dark:text-gray-300 text-sm">Job Sheets</h2>
+            <Link href={`/jobs/${id}/sheets/new`}
+              className="flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-700">
+              <Plus size={13} />Start Sheet
+            </Link>
+          </div>
+          {sheets.length === 0 ? (
+            <div className="text-center py-4">
+              <FileCheck2 size={24} className="text-gray-200 dark:text-gray-700 mx-auto mb-1" />
+              <p className="text-xs text-gray-400">No sheets yet</p>
+              <Link href={`/jobs/${id}/sheets/new`} className="text-xs text-blue-600 hover:underline mt-1 inline-block">
+                Start a sheet →
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {sheets.map(s => (
+                <Link key={s.id} href={`/jobs/${id}/sheets/${s.id}`}
+                  className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{s.template_name}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {s.status === 'completed' ? `Completed ${format(new Date(s.completed_at || s.created_at), 'MMM d')}` : 'In Progress'}
+                    </p>
+                  </div>
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                    s.status === 'completed'
+                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                      : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                  }`}>
+                    {s.status === 'completed' ? '✓ Done' : 'In Progress'}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Status CTA */}
