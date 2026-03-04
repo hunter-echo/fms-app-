@@ -253,6 +253,18 @@ export async function getJobSheet(id: string): Promise<JobSheet | null> {
   return { ...data, responses: data.responses || {}, photos: data.photos || [] } as JobSheet
 }
 
+export async function getJobSheetWithDetails(id: string): Promise<(JobSheet & { job?: Job & { customer?: Customer } }) | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const { data, error } = await sb
+    .from('job_sheets')
+    .select('*, job:jobs(*, customer:customers(*))')
+    .eq('id', id)
+    .single()
+  if (error) { console.error(error); return null }
+  return { ...data, responses: data.responses || {}, photos: data.photos || [] }
+}
+
 export async function createJobSheet(sheet: Omit<JobSheet, 'id' | 'created_at'>): Promise<JobSheet | null> {
   const sb = getSupabase()
   if (!sb) return null
@@ -267,4 +279,16 @@ export async function updateJobSheet(id: string, updates: Partial<JobSheet>): Pr
   const { error } = await sb.from('job_sheets').update(updates).eq('id', id)
   if (error) { console.error(error); return false }
   return true
+}
+
+export async function getPendingReviewSheets(): Promise<(JobSheet & { job?: Job & { customer?: Customer } })[]> {
+  const sb = getSupabase()
+  if (!sb) return []
+  const { data, error } = await sb
+    .from('job_sheets')
+    .select('*, job:jobs(*, customer:customers(*))')
+    .eq('status', 'pending_review')
+    .order('completed_at', { ascending: true })
+  if (error) { console.error(error); return [] }
+  return (data || []).map(s => ({ ...s, responses: s.responses || {}, photos: s.photos || [] }))
 }

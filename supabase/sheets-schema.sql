@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS job_sheets (
   template_name TEXT NOT NULL,
   responses JSONB DEFAULT '{}'::jsonb,
   photos TEXT[] DEFAULT '{}',
-  status TEXT DEFAULT 'in_progress' CHECK (status IN ('in_progress', 'completed')),
+  status TEXT DEFAULT 'in_progress' CHECK (status IN ('in_progress', 'pending_review', 'approved', 'sent')),
+  sent_at TIMESTAMPTZ,
   notes TEXT,
   completed_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW()

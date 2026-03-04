@@ -101,9 +101,10 @@ export interface JobSheet {
   template_name: string
   responses: Record<string, string | boolean | number>
   photos: string[]
-  status: 'in_progress' | 'completed'
+  status: 'in_progress' | 'pending_review' | 'approved' | 'sent'
   notes?: string
   completed_at?: string
+  sent_at?: string
   created_at: string
 }
 
