@@ -5,7 +5,7 @@ import { use } from 'react'
 import { getInvoices, getCustomers } from '@/lib/data'
 import type { Invoice, Customer } from '@/lib/types'
 import { format } from 'date-fns'
-import { ArrowLeft, Download, Send, CheckCircle, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Download, Send, CheckCircle, AlertCircle, Link2, Copy } from 'lucide-react'
 import Link from 'next/link'
 import { getSupabase } from '@/lib/supabase'
 
@@ -23,6 +23,9 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [paymentLink, setPaymentLink] = useState('')
+  const [generatingLink, setGeneratingLink] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     Promise.all([getInvoices(), getCustomers()]).then(([invoices, customers]) => {
@@ -45,6 +48,40 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
       setTimeout(() => setSaved(false), 2000)
     }
     setUpdating(false)
+  }
+
+  const generatePaymentLink = async () => {
+    if (!invoice) return
+    setGeneratingLink(true)
+    try {
+      const res = await fetch('/api/create-payment-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceId: invoice.id,
+          invoiceNumber: invoice.invoice_number,
+          amount: invoice.total,
+          customerName: customer?.name || '',
+          description: `HVAC services — ${invoice.invoice_number}`,
+        }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        setPaymentLink(data.url)
+        // Save link to DB
+        const sb = getSupabase()
+        if (sb) await sb.from('invoices').update({ stripe_payment_link: data.url, status: 'sent' }).eq('id', id)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+    setGeneratingLink(false)
+  }
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(paymentLink)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   if (loading) {
@@ -151,6 +188,37 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <h2 className="font-semibold text-gray-700 text-sm mb-2">Notes</h2>
             <p className="text-sm text-gray-600">{invoice.notes}</p>
+          </div>
+        )}
+
+        {/* Payment Link */}
+        {invoice.status !== 'paid' && (
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <h2 className="font-semibold text-gray-700 text-sm mb-3">💳 Collect Payment</h2>
+            {paymentLink ? (
+              <div className="space-y-3">
+                <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                  <p className="text-xs text-green-700 font-medium mb-1">Payment link ready — send this to your customer:</p>
+                  <p className="text-xs text-green-800 break-all font-mono">{paymentLink}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={copyLink}
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors">
+                    <Copy size={14} />{copied ? 'Copied!' : 'Copy Link'}
+                  </button>
+                  <a href={`sms:?body=Hi! Your invoice ${invoice.invoice_number} for $${invoice.total.toFixed(2)} is ready. Pay here: ${paymentLink}`}
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-emerald-600 text-white rounded-xl text-sm font-medium hover:bg-emerald-700 transition-colors">
+                    <Send size={14} />Text Customer
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <button onClick={generatePaymentLink} disabled={generatingLink}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-60">
+                <Link2 size={15} />
+                {generatingLink ? 'Generating...' : `Generate Payment Link — $${invoice.total.toFixed(2)}`}
+              </button>
+            )}
           </div>
         )}
 
