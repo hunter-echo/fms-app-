@@ -77,6 +77,30 @@ export interface Invoice {
   stripe_payment_intent_id?: string
 }
 
+// ─── ESTIMATES ───────────────────────────────────────────────────────────────
+
+export type EstimateStatus = 'draft' | 'sent' | 'approved' | 'declined' | 'converted'
+
+export interface Estimate {
+  id: string
+  created_at: string
+  estimate_number: string
+  customer_id: string
+  customer?: Customer
+  job_id?: string
+  job?: Job
+  status: EstimateStatus
+  line_items: InvoiceLineItem[]
+  subtotal: number
+  tax_rate: number
+  tax_amount: number
+  total: number
+  notes?: string
+  valid_until?: string
+  approved_at?: string
+  converted_at?: string
+}
+
 // ─── SHEETS ─────────────────────────────────────────────────────────────────
 
 export interface SheetField {

@@ -1,7 +1,7 @@
 'use client'
 
 import { getSupabase, MOCK_DATA } from './supabase'
-import type { Customer, Job, Invoice, Technician, SheetTemplate, JobSheet } from './types'
+import type { Customer, Job, Invoice, Technician, SheetTemplate, JobSheet, Estimate } from './types'
 
 // ─── MOCK TEMPLATES ─────────────────────────────────────────────────────────
 
@@ -277,6 +277,47 @@ export async function updateJobSheet(id: string, updates: Partial<JobSheet>): Pr
   const sb = getSupabase()
   if (!sb) return true
   const { error } = await sb.from('job_sheets').update(updates).eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+// ─── ESTIMATES ───────────────────────────────────────────────────────────────
+
+export async function getEstimates(): Promise<Estimate[]> {
+  const sb = getSupabase()
+  if (!sb) return []
+  const { data, error } = await sb
+    .from('estimates')
+    .select('*, customer:customers(*), job:jobs(*)')
+    .order('created_at', { ascending: false })
+  if (error) { console.error(error); return [] }
+  return data as Estimate[]
+}
+
+export async function getEstimate(id: string): Promise<Estimate | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const { data, error } = await sb
+    .from('estimates')
+    .select('*, customer:customers(*), job:jobs(*)')
+    .eq('id', id)
+    .single()
+  if (error) { console.error(error); return null }
+  return data as Estimate
+}
+
+export async function createEstimate(estimate: Omit<Estimate, 'id' | 'created_at' | 'estimate_number'>): Promise<Estimate | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const { data, error } = await sb.from('estimates').insert(estimate).select().single()
+  if (error) { console.error(error); return null }
+  return data as Estimate
+}
+
+export async function updateEstimate(id: string, updates: Partial<Estimate>): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('estimates').update(updates).eq('id', id)
   if (error) { console.error(error); return false }
   return true
 }
