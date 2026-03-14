@@ -1,7 +1,7 @@
 'use client'
 
 import { getSupabase, MOCK_DATA } from './supabase'
-import type { Customer, Job, Invoice, Technician, SheetTemplate, JobSheet, Estimate } from './types'
+import type { Customer, Job, Invoice, Technician, SheetTemplate, JobSheet, Estimate, CatalogItem } from './types'
 
 // ─── MOCK TEMPLATES ─────────────────────────────────────────────────────────
 
@@ -277,6 +277,40 @@ export async function updateJobSheet(id: string, updates: Partial<JobSheet>): Pr
   const sb = getSupabase()
   if (!sb) return true
   const { error } = await sb.from('job_sheets').update(updates).eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+// ─── PRICE BOOK ──────────────────────────────────────────────────────────────
+
+export async function getCatalogItems(): Promise<CatalogItem[]> {
+  const sb = getSupabase()
+  if (!sb) return []
+  const { data, error } = await sb.from('line_item_catalog').select('*').eq('active', true).order('category').order('name')
+  if (error) { console.error(error); return [] }
+  return data as CatalogItem[]
+}
+
+export async function createCatalogItem(item: Omit<CatalogItem, 'id' | 'created_at'>): Promise<CatalogItem | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const { data, error } = await sb.from('line_item_catalog').insert(item).select().single()
+  if (error) { console.error(error); return null }
+  return data as CatalogItem
+}
+
+export async function updateCatalogItem(id: string, updates: Partial<CatalogItem>): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('line_item_catalog').update(updates).eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+export async function deleteCatalogItem(id: string): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('line_item_catalog').delete().eq('id', id)
   if (error) { console.error(error); return false }
   return true
 }

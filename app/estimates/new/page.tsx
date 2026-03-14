@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getCustomers, getJobs, createEstimate } from '@/lib/data'
 import type { Customer, Job } from '@/lib/types'
-import { ArrowLeft, Plus, Trash2 } from 'lucide-react'
+import { ArrowLeft, Plus, Trash2, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import CatalogPicker from '@/components/CatalogPicker'
+import type { CatalogItem } from '@/lib/types'
 
 interface LineItem {
   id: string
@@ -26,6 +28,7 @@ function NewEstimateForm() {
   const [jobs, setJobs] = useState<Job[]>([])
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [showCatalog, setShowCatalog] = useState(false)
   const [lineItems, setLineItems] = useState<LineItem[]>([
     { id: '1', description: '', quantity: 1, unit_price: 0 },
   ])
@@ -51,6 +54,9 @@ function NewEstimateForm() {
 
   const set = (field: string, value: string) => setForm(prev => ({ ...prev, [field]: value }))
   const addLine = () => setLineItems(prev => [...prev, { id: Date.now().toString(), description: '', quantity: 1, unit_price: 0 }])
+  const addFromCatalog = (item: CatalogItem) => {
+    setLineItems(prev => [...prev, { id: Date.now().toString(), description: item.name, quantity: 1, unit_price: item.unit_price }])
+  }
   const removeLine = (id: string) => setLineItems(prev => prev.filter(l => l.id !== id))
   const updateLine = (id: string, field: keyof LineItem, value: string | number) =>
     setLineItems(prev => prev.map(l => l.id === id ? { ...l, [field]: value } : l))
@@ -127,7 +133,13 @@ function NewEstimateForm() {
 
         {/* Line Items */}
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
-          <h2 className="font-semibold text-gray-700 dark:text-gray-300 text-sm mb-4">Line Items</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-700 dark:text-gray-300 text-sm">Line Items</h2>
+            <button type="button" onClick={() => setShowCatalog(true)}
+              className="flex items-center gap-1.5 text-xs font-medium text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400 px-3 py-1.5 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors">
+              <BookOpen size={13} />Price Book
+            </button>
+          </div>
           <div className="mb-2 hidden md:grid grid-cols-12 gap-2 text-xs font-medium text-gray-400 px-1">
             <span className="col-span-6">Description</span>
             <span className="col-span-2 text-center">Qty</span>
@@ -192,6 +204,7 @@ function NewEstimateForm() {
           </button>
         </div>
       </form>
+      {showCatalog && <CatalogPicker onSelect={addFromCatalog} onClose={() => setShowCatalog(false)} />}
     </div>
   )
 }
@@ -199,3 +212,4 @@ function NewEstimateForm() {
 export default function NewEstimatePage() {
   return <Suspense fallback={<div className="p-6 dark:bg-gray-950 min-h-screen animate-pulse" />}><NewEstimateForm /></Suspense>
 }
+

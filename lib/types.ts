@@ -77,6 +77,18 @@ export interface Invoice {
   stripe_payment_intent_id?: string
 }
 
+// ─── PRICE BOOK ──────────────────────────────────────────────────────────────
+
+export interface CatalogItem {
+  id: string
+  name: string
+  description?: string
+  unit_price: number
+  category: string
+  active: boolean
+  created_at: string
+}
+
 // ─── ESTIMATES ───────────────────────────────────────────────────────────────
 
 export type EstimateStatus = 'draft' | 'sent' | 'approved' | 'declined' | 'converted'

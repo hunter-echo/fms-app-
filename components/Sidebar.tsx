@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Users, ClipboardList, Calendar, FileText, Settings, Wind, LogOut, Sun, Moon, FileCheck2, FileSignature } from 'lucide-react'
+import { LayoutDashboard, Users, ClipboardList, Calendar, FileText, Settings, Wind, LogOut, Sun, Moon, FileCheck2, FileSignature, BookOpen } from 'lucide-react'
 import { signOut } from '@/lib/auth'
 import { useTheme } from 'next-themes'
 
@@ -12,6 +12,7 @@ const nav = [
   { href: '/schedule', label: 'Schedule', icon: Calendar },
   { href: '/sheets', label: 'Sheets', icon: FileCheck2 },
   { href: '/customers', label: 'Customers', icon: Users },
+  { href: '/pricebook', label: 'Price Book', icon: BookOpen },
   { href: '/estimates', label: 'Estimates', icon: FileSignature },
   { href: '/invoices', label: 'Invoices', icon: FileText },
   { href: '/settings', label: 'Settings', icon: Settings },
