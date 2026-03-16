@@ -356,6 +356,49 @@ export async function updateEstimate(id: string, updates: Partial<Estimate>): Pr
   return true
 }
 
+export async function convertEstimateToInvoice(estimate: Estimate): Promise<Invoice | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const dueDate = new Date()
+  dueDate.setDate(dueDate.getDate() + 30)
+  const { data, error } = await sb.from('invoices').insert({
+    customer_id: estimate.customer_id,
+    job_id: estimate.job_id || null,
+    status: 'draft',
+    line_items: estimate.line_items,
+    subtotal: estimate.subtotal,
+    tax_rate: estimate.tax_rate,
+    tax_amount: estimate.tax_amount,
+    total: estimate.total,
+    notes: estimate.notes || null,
+    due_date: dueDate.toISOString().split('T')[0],
+  }).select().single()
+  if (error) { console.error(error); return null }
+  await sb.from('estimates').update({ status: 'converted', converted_at: new Date().toISOString() }).eq('id', estimate.id)
+  return data as Invoice
+}
+
+export async function convertEstimateToJob(estimate: Estimate): Promise<Job | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const customer = estimate.customer
+  const description = estimate.line_items.map(l => l.description).filter(Boolean).join(', ')
+  const { data, error } = await sb.from('jobs').insert({
+    customer_id: estimate.customer_id,
+    title: description ? description.substring(0, 80) : 'HVAC Service',
+    description: estimate.notes || description || '',
+    status: 'pending',
+    priority: 'medium',
+    address: customer?.address || '',
+    city: customer?.city || '',
+    state: customer?.state || 'CO',
+    zip: customer?.zip || '',
+  }).select().single()
+  if (error) { console.error(error); return null }
+  await sb.from('estimates').update({ status: 'converted', converted_at: new Date().toISOString(), job_id: data.id }).eq('id', estimate.id)
+  return data as Job
+}
+
 export async function getPendingReviewSheets(): Promise<(JobSheet & { job?: Job & { customer?: Customer } })[]> {
   const sb = getSupabase()
   if (!sb) return []
