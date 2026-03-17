@@ -1,7 +1,7 @@
 'use client'
 
 import { getSupabase, MOCK_DATA } from './supabase'
-import type { Customer, Job, Invoice, Technician, SheetTemplate, JobSheet, Estimate, CatalogItem } from './types'
+import type { Customer, Job, Invoice, Technician, SheetTemplate, JobSheet, Estimate, CatalogItem, Equipment } from './types'
 
 // ─── MOCK TEMPLATES ─────────────────────────────────────────────────────────
 
@@ -311,6 +311,50 @@ export async function deleteCatalogItem(id: string): Promise<boolean> {
   const sb = getSupabase()
   if (!sb) return true
   const { error } = await sb.from('line_item_catalog').delete().eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+// ─── EQUIPMENT ───────────────────────────────────────────────────────────────
+
+export async function getEquipment(customerId?: string): Promise<Equipment[]> {
+  const sb = getSupabase()
+  if (!sb) return []
+  let query = sb.from('equipment').select('*, customer:customers(*)').order('created_at', { ascending: false })
+  if (customerId) query = query.eq('customer_id', customerId)
+  const { data, error } = await query
+  if (error) { console.error(error); return [] }
+  return data as Equipment[]
+}
+
+export async function getEquipmentById(id: string): Promise<Equipment | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const { data, error } = await sb.from('equipment').select('*, customer:customers(*)').eq('id', id).single()
+  if (error) { console.error(error); return null }
+  return data as Equipment
+}
+
+export async function createEquipment(eq: Omit<Equipment, 'id' | 'created_at' | 'customer'>): Promise<Equipment | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const { data, error } = await sb.from('equipment').insert(eq).select().single()
+  if (error) { console.error(error); return null }
+  return data as Equipment
+}
+
+export async function updateEquipment(id: string, updates: Partial<Equipment>): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('equipment').update(updates).eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+export async function deleteEquipment(id: string): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('equipment').delete().eq('id', id)
   if (error) { console.error(error); return false }
   return true
 }

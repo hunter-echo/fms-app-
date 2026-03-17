@@ -144,6 +144,26 @@ export interface JobSheet {
   created_at: string
 }
 
+// ─── EQUIPMENT ───────────────────────────────────────────────────────────────
+
+export type EquipmentType = 'furnace' | 'ac' | 'heat_pump' | 'boiler' | 'water_heater' | 'air_handler' | 'other'
+
+export interface Equipment {
+  id: string
+  created_at: string
+  customer_id: string
+  customer?: Customer
+  type: EquipmentType
+  brand: string
+  model: string
+  serial_number?: string
+  install_date?: string
+  last_service_date?: string
+  location?: string
+  notes?: string
+  warranty_expiry?: string
+}
+
 export interface DashboardStats {
   totalJobs: number
   activeJobs: number

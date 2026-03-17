@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { use } from 'react'
-import { getCustomers, getJobs, updateCustomer } from '@/lib/data'
-import type { Customer, Job } from '@/lib/types'
+import { getCustomers, getJobs, updateCustomer, getEquipment } from '@/lib/data'
+import type { Customer, Job, Equipment } from '@/lib/types'
 import { format } from 'date-fns'
-import { ArrowLeft, Phone, Mail, MapPin, ClipboardList, Plus, Edit2, Save } from 'lucide-react'
+import { ArrowLeft, Phone, Mail, MapPin, ClipboardList, Plus, Edit2, Save, Wrench, Flame, Wind, Thermometer, Droplets, Zap, Package } from 'lucide-react'
 import Link from 'next/link'
 
 const statusColors: Record<string, string> = {
@@ -20,18 +20,29 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
   const { id } = use(params)
   const [customer, setCustomer] = useState<Customer | null>(null)
   const [jobs, setJobs] = useState<Job[]>([])
+  const [equipment, setEquipment] = useState<Equipment[]>([])
   const [loading, setLoading] = useState(true)
+
+  const equipTypeIcons: Record<string, React.ElementType> = {
+    furnace: Flame, ac: Wind, heat_pump: Thermometer,
+    boiler: Droplets, water_heater: Droplets, air_handler: Zap, other: Package,
+  }
+  const equipTypeLabels: Record<string, string> = {
+    furnace: 'Furnace', ac: 'A/C Unit', heat_pump: 'Heat Pump',
+    boiler: 'Boiler', water_heater: 'Water Heater', air_handler: 'Air Handler', other: 'Other',
+  }
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [form, setForm] = useState<Partial<Customer>>({})
 
   useEffect(() => {
-    Promise.all([getCustomers(), getJobs()]).then(([customers, allJobs]) => {
+    Promise.all([getCustomers(), getJobs(), getEquipment(id)]).then(([customers, allJobs, eq]) => {
       const found = customers.find(c => c.id === id)
       setCustomer(found || null)
       setForm(found || {})
       setJobs(allJobs.filter(j => j.customer_id === id))
+      setEquipment(eq)
       setLoading(false)
     })
   }, [id])
@@ -171,15 +182,60 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <Link href={`/jobs/new`}
             className="bg-blue-600 text-white rounded-xl py-3 px-4 flex items-center gap-2 text-sm font-medium hover:bg-blue-700 transition-colors justify-center">
             <Plus size={16} />New Job
           </Link>
           <Link href={`/invoices/new`}
             className="bg-emerald-600 text-white rounded-xl py-3 px-4 flex items-center gap-2 text-sm font-medium hover:bg-emerald-700 transition-colors justify-center">
-            <ClipboardList size={16} />New Invoice
+            <ClipboardList size={16} />Invoice
           </Link>
+          <Link href={`/equipment/new?customer_id=${id}`}
+            className="bg-orange-500 text-white rounded-xl py-3 px-4 flex items-center gap-2 text-sm font-medium hover:bg-orange-600 transition-colors justify-center">
+            <Wrench size={16} />Equipment
+          </Link>
+        </div>
+
+        {/* Equipment */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+            <h2 className="font-semibold text-gray-900 dark:text-white">Equipment</h2>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-400">{equipment.length} unit{equipment.length !== 1 ? 's' : ''}</span>
+              <Link href={`/equipment/new?customer_id=${id}`}
+                className="text-blue-600 dark:text-blue-400 text-xs font-medium hover:underline">+ Add</Link>
+            </div>
+          </div>
+          {equipment.length === 0 ? (
+            <div className="px-5 py-6 text-center text-gray-400 text-sm">
+              No equipment tracked
+              <Link href={`/equipment/new?customer_id=${id}`} className="ml-1 text-blue-500 hover:underline">— add a unit</Link>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-50 dark:divide-gray-700">
+              {equipment.map(eq => {
+                const EqIcon = equipTypeIcons[eq.type] || Package
+                return (
+                  <Link key={eq.id} href={`/equipment/${eq.id}`}
+                    className="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center shrink-0">
+                      <EqIcon size={15} className="text-orange-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{eq.brand} {eq.model}</p>
+                      <p className="text-xs text-gray-400">{equipTypeLabels[eq.type]}{eq.location ? ` · ${eq.location}` : ''}</p>
+                    </div>
+                    {eq.last_service_date && (
+                      <p className="text-xs text-gray-400 shrink-0">
+                        {format(new Date(eq.last_service_date), 'MMM d, yy')}
+                      </p>
+                    )}
+                  </Link>
+                )
+              })}
+            </div>
+          )}
         </div>
 
         {/* Job History */}

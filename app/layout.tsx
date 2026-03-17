@@ -10,6 +10,16 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Mountain Climate HVAC',
   description: 'HVAC Field Service Management',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'MC HVAC',
+  },
+  icons: {
+    apple: '/icons/apple-touch-icon.png',
+    icon: '/icons/icon-192.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
