@@ -7,7 +7,7 @@ import { Plus, FileCheck2, Edit, Trash2, Clock, AlertCircle } from 'lucide-react
 import Link from 'next/link'
 import { format } from 'date-fns'
 
-const DEFAULT_IDS = ['tpl-1', 'tpl-2', 'tpl-3']
+const DEFAULT_NAMES = ['Furnace Tune-Up', 'A/C Tune-Up', 'Rooftop Unit Tune-Up']
 type PendingSheet = JobSheet & { job?: Job & { customer?: Customer } }
 
 export default function SheetsPage() {
@@ -104,7 +104,7 @@ export default function SheetsPage() {
       ) : (
         <div className="space-y-3">
           {templates.map(t => {
-            const isDefault = DEFAULT_IDS.includes(t.id)
+            const isDefault = DEFAULT_NAMES.includes(t.name)
             const checkboxCount = t.fields.filter(f => f.type === 'checkbox').length
             return (
               <div key={t.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">

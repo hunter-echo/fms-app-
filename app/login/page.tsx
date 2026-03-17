@@ -2,11 +2,15 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { signIn } from '@/lib/auth'
 import { Wind } from 'lucide-react'
+import { Suspense } from 'react'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const nextPath = searchParams.get('next') || '/'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -21,7 +25,7 @@ export default function LoginPage() {
       setError('Invalid email or password.')
       setLoading(false)
     } else {
-      router.push('/')
+      router.push(nextPath)
       router.refresh()
     }
   }
@@ -88,4 +92,8 @@ export default function LoginPage() {
       </div>
     </div>
   )
+}
+
+export default function LoginPage() {
+  return <Suspense fallback={<div className="min-h-screen bg-gray-50" />}><LoginForm /></Suspense>
 }
