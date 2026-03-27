@@ -2,14 +2,14 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, ClipboardList, FileCheck2, Users, FileText } from 'lucide-react'
+import { LayoutDashboard, ClipboardList, FileCheck2, Users, Timer } from 'lucide-react'
 
 const tabs = [
   { href: '/', label: 'Home', icon: LayoutDashboard },
   { href: '/jobs', label: 'Jobs', icon: ClipboardList },
   { href: '/sheets', label: 'Sheets', icon: FileCheck2 },
   { href: '/customers', label: 'Customers', icon: Users },
-  { href: '/invoices', label: 'Invoices', icon: FileText },
+  { href: '/timeclock', label: 'Clock', icon: Timer },
 ]
 
 export default function BottomNav() {

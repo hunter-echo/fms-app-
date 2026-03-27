@@ -144,6 +144,24 @@ export interface JobSheet {
   created_at: string
 }
 
+// ─── TIME CLOCK ──────────────────────────────────────────────────────────────
+
+export type TimeEntryStatus = 'active' | 'completed' | 'approved'
+
+export interface TimeEntry {
+  id: string
+  created_at: string
+  technician_id: string
+  technician?: Technician
+  job_id?: string
+  job?: Job
+  clock_in: string
+  clock_out?: string
+  break_minutes: number
+  notes?: string
+  status: TimeEntryStatus
+}
+
 // ─── EQUIPMENT ───────────────────────────────────────────────────────────────
 
 export type EquipmentType = 'furnace' | 'ac' | 'heat_pump' | 'boiler' | 'water_heater' | 'air_handler' | 'other'

@@ -1,7 +1,7 @@
 'use client'
 
 import { getSupabase, MOCK_DATA } from './supabase'
-import type { Customer, Job, Invoice, Technician, SheetTemplate, JobSheet, Estimate, CatalogItem, Equipment } from './types'
+import type { Customer, Job, Invoice, Technician, SheetTemplate, JobSheet, Estimate, CatalogItem, Equipment, TimeEntry } from './types'
 
 // ─── MOCK TEMPLATES ─────────────────────────────────────────────────────────
 
@@ -311,6 +311,77 @@ export async function deleteCatalogItem(id: string): Promise<boolean> {
   const sb = getSupabase()
   if (!sb) return true
   const { error } = await sb.from('line_item_catalog').delete().eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+// ─── TIME CLOCK ──────────────────────────────────────────────────────────────
+
+export async function getTimeEntries(filters?: { technician_id?: string; from?: string; to?: string }): Promise<TimeEntry[]> {
+  const sb = getSupabase()
+  if (!sb) return []
+  let q = sb.from('time_entries').select('*, technician:technicians(*), job:jobs(id,job_number,title)').order('clock_in', { ascending: false })
+  if (filters?.technician_id) q = q.eq('technician_id', filters.technician_id)
+  if (filters?.from) q = q.gte('clock_in', filters.from)
+  if (filters?.to) q = q.lte('clock_in', filters.to)
+  const { data, error } = await q
+  if (error) { console.error(error); return [] }
+  return data as TimeEntry[]
+}
+
+export async function getActiveEntry(technicianId: string): Promise<TimeEntry | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const { data, error } = await sb.from('time_entries')
+    .select('*, technician:technicians(*), job:jobs(id,job_number,title)')
+    .eq('technician_id', technicianId)
+    .eq('status', 'active')
+    .is('clock_out', null)
+    .maybeSingle()
+  if (error) { console.error(error); return null }
+  return data as TimeEntry | null
+}
+
+export async function clockIn(technicianId: string, jobId?: string, notes?: string): Promise<TimeEntry | null> {
+  const sb = getSupabase()
+  if (!sb) return null
+  const { data, error } = await sb.from('time_entries').insert({
+    technician_id: technicianId,
+    job_id: jobId || null,
+    clock_in: new Date().toISOString(),
+    break_minutes: 0,
+    notes: notes || null,
+    status: 'active',
+  }).select('*, technician:technicians(*), job:jobs(id,job_number,title)').single()
+  if (error) { console.error(error); return null }
+  return data as TimeEntry
+}
+
+export async function clockOut(entryId: string, breakMinutes = 0, notes?: string): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('time_entries').update({
+    clock_out: new Date().toISOString(),
+    break_minutes: breakMinutes,
+    notes: notes || null,
+    status: 'completed',
+  }).eq('id', entryId)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+export async function updateTimeEntry(id: string, updates: Partial<TimeEntry>): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('time_entries').update(updates).eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
+export async function deleteTimeEntry(id: string): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('time_entries').delete().eq('id', id)
   if (error) { console.error(error); return false }
   return true
 }
