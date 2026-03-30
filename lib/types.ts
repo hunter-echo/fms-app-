@@ -23,6 +23,7 @@ export interface Technician {
   phone: string
   color: string // for calendar display
   active: boolean
+  hourly_rate?: number
 }
 
 export interface Job {

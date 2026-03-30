@@ -193,6 +193,14 @@ export async function getTechnicians(): Promise<Technician[]> {
   return data as Technician[]
 }
 
+export async function updateTechnician(id: string, updates: Partial<Technician>): Promise<boolean> {
+  const sb = getSupabase()
+  if (!sb) return true
+  const { error } = await sb.from('technicians').update(updates).eq('id', id)
+  if (error) { console.error(error); return false }
+  return true
+}
+
 // ─── SHEET TEMPLATES ────────────────────────────────────────────────────────
 
 export async function getSheetTemplates(): Promise<SheetTemplate[]> {
